@@ -71,7 +71,8 @@ public class PsqlStore implements Store {
                 if (rs.next()) {
                     int id = rs.getInt("id");
                     String name = rs.getString("name");
-                    result.add(new Candidate(id, name));
+                    int photoId = rs.getInt("photoId");
+                    result.add(new Candidate(id, name, photoId));
                 } else {
                     break;
                 }
@@ -162,6 +163,17 @@ public class PsqlStore implements Store {
         }
     }
 
+    private void delete(int id) {
+        try (Connection cn = pool.getConnection();
+        PreparedStatement ps = cn.prepareStatement(
+                "DELETE FROM candidate WHERE id = ?")) {
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (SQLException e) {
+            logger.error("Connection error", e);
+        }
+    }
+
     @Override
     public Post findPostById(int id) {
         Post result = null;
@@ -193,7 +205,8 @@ public class PsqlStore implements Store {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     String name = rs.getString("name");
-                    result = new Candidate(id, name);
+                    int photoId = rs.getInt("photoId");
+                    result = new Candidate(id, name, photoId);
                 }
             } catch (SQLException e) {
                 logger.error("SQL error", e);

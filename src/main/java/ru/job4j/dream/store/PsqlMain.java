@@ -14,9 +14,9 @@ public class PsqlMain {
             System.out.println(post.getId() + " " + post.getName());
         }
         System.out.println("Вакансия с индексом 2: " + store.findPostById(2).toString());
-        store.save(new Candidate(0, "Junior"));
-        store.save(new Candidate(0, "Middle"));
-        store.save(new Candidate(0, "Senior"));
+        store.save(new Candidate(0, "Junior", 0));
+        store.save(new Candidate(0, "Middle", 1));
+        store.save(new Candidate(0, "Senior", 2));
         System.out.println("Все кандидаты: ");
         for (Candidate candidate : store.findAllCandidates()) {
             System.out.println(candidate.getId() + " " + candidate.getName());
